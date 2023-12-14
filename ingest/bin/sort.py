@@ -59,8 +59,8 @@ if __name__=="__main__":
             elif a_or_b[record.id]=='B':
                 b_sequences.append(record)
 
-    SeqIO.write(a_sequences, "data/a/sequences_notdedup.fasta","fasta")
-    SeqIO.write(b_sequences, "data/b/sequences_notdedup.fasta", "fasta")
+    SeqIO.write(a_sequences, "data/a/sequences.fasta","fasta")
+    SeqIO.write(b_sequences, "data/b/sequences.fasta", "fasta")
 
     metadata = pd.read_csv("data/metadata.tsv", sep="\t", index_col='accession')
     original_columns = metadata.columns
@@ -71,5 +71,5 @@ if __name__=="__main__":
                               columns=original_columns)
     b_metadata = pd.DataFrame(data=metadata.loc[metadata['type']=='B'],
                               columns=original_columns)
-    a_metadata.to_csv('data/a/metadata_notdedup.tsv', sep="\t")
-    b_metadata.to_csv('data/b/metadata_notdedup.tsv', sep="\t")
+    a_metadata.to_csv('data/a/metadata_sorted.tsv', sep="\t")
+    b_metadata.to_csv('data/b/metadata_sorted.tsv', sep="\t")

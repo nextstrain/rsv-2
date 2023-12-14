@@ -53,7 +53,7 @@ if __name__=="__main__":
             F_coverage[accession].append(coverages_F.get(accession, 0.00))
             genome_coverage[accession].append(coverage_genome.get(accession, 0.00))
 
-    metadata_files = ["data/b/metadata_no_covg.tsv", "data/a/metadata_no_covg.tsv"]
+    metadata_files = ["data/b/metadata_sorted.tsv", "data/a/metadata_sorted.tsv"]
     outputs = ["data/b/metadata.tsv", "data/a/metadata.tsv"]
 
     # this part of the script reads the already separated a and b metadata and adds the F and G covg values to the correct row based on accession
