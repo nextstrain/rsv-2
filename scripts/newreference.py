@@ -5,7 +5,7 @@ import shutil
 import argparse
 import sys
 
-def new_reference(referencefile, outgenbank, outfasta, gene):
+def new_reference(referencefile, outgenbank, outfasta, gene, start, end):
     ref = SeqIO.read(referencefile, "genbank")
     startofgene = None
     endofgene = None
@@ -25,9 +25,19 @@ def new_reference(referencefile, outgenbank, outfasta, gene):
         sys.exit(1)
 
     record = ref[startofgene:endofgene]
+    # Allows for subgenic regions
+    if (gene is not None and start is not None and end is not None):
+        record = record[int(start):int(end)]
+
     source_feature =  SeqFeature(FeatureLocation(start=0, end=len(record)), type='source',
                                  qualifiers=ref_source_feature.qualifiers)
     record.features.append(source_feature)
+
+    # For subgenic regions, adds a CDS feature {gene}_{start}_{end}
+    if(gene is not None and start is not None and end is not None):
+        gene = gene + "_" + start + "_" + end
+        record.features.append(SeqFeature(FeatureLocation(start=0, end=len(record)), type='CDS',
+                                      qualifiers={'gene': gene}))
 
     SeqIO.write(record, outgenbank, 'genbank')
     SeqIO.write(record, outfasta, "fasta")
@@ -43,11 +53,19 @@ if __name__ == '__main__':
     parser.add_argument("--output-fasta", required=True, help="GenBank new reference file")
     parser.add_argument("--output-genbank", required=True, help="GenBank new reference file")
     parser.add_argument("--gene", help="gene name or genome for entire genome")
+    parser.add_argument("--start", help="Start 0-based position relative to the gene (requires --gene argument)")
+    parser.add_argument("--end", help="End 0-based position relative to the gene (requires --gene argument)")
     args = parser.parse_args()
 
     if args.gene=='genome':
+        # Check if start and end are specified here
+        if (args.start is not None and args.end is not None):
+            print(f"ERROR: --start '{args.start}' --end '{args.end}' is not supported for full genome.", file=sys.stderr)
+            sys.exit(1)
+
+
         shutil.copy(args.reference, args.output_genbank)
         SeqIO.write(SeqIO.read(args.reference, 'genbank'), args.output_fasta, 'fasta')
     else:
-        new_reference(args.reference, args.output_genbank, args.output_fasta, args.gene)
+        new_reference(args.reference, args.output_genbank, args.output_fasta, args.gene, args.start, args.end)
 
