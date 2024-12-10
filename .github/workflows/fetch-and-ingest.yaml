@@ -45,18 +45,8 @@ jobs:
           echo "s3_dst=$S3_DST" >> "$GITHUB_OUTPUT"
         env:
           TRIAL_NAME: ${{ inputs.trial_name }}
-      - id: trigger_rebuild
-        run: |
-          TRIGGER_REBUILD=true
-
-          if [[ -n "$TRIAL_NAME" ]]; then
-            TRIGGER_REBUILD=false
-          fi
-
-          echo "trigger_rebuild=$TRIGGER_REBUILD" >> "$GITHUB_OUTPUT"
     outputs:
       s3_dst: ${{ steps.s3_dst.outputs.s3_dst }}
-      trigger_rebuild: ${{ steps.trigger_rebuild.outputs.trigger_rebuild }}
 
   fetch-and-ingest:
     needs: [set_config_overrides]
@@ -75,11 +65,9 @@ jobs:
           --memory 32gib \
           --env PAT_GITHUB_DISPATCH="$GH_TOKEN_NEXTSTRAIN_BOT_WORKFLOW_DISPATCH" \
           --env S3_DST \
-          --env TRIGGER_REBUILD \
           ingest \
             --configfiles config/config.yaml config/optional.yaml \
-            --config s3_dst="$S3_DST" trigger_rebuild="$TRIGGER_REBUILD" \
+            --config s3_dst="$S3_DST" \
             --printshellcmds
       env: |
         S3_DST: ${{ needs.set_config_overrides.outputs.s3_dst }}
-        TRIGGER_REBUILD: ${{ needs.set_config_overrides.outputs.trigger_rebuild }}

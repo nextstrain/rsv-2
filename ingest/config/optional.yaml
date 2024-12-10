@@ -24,6 +24,3 @@ upload:
       'b/sequences.fasta.xz'
     ]
     cloudfront_domain: 'data.nextstrain.org'
-
-# Toggle for triggering builds
-trigger_rebuild: True
