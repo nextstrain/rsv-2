@@ -46,7 +46,8 @@
   "panels": [
      "tree",
      "map",
-     "entropy"
+     "entropy",
+     "frequencies"
   ],
   "display_defaults": {
     "map_triplicate": true,

@@ -61,7 +61,8 @@
           "name": "G_clade",
           "displayName": "G_clade (Goya et al)",
           "description": "Clades based on the G gene by Goya et al, IRV, 2019.",
-          "hideInWeb": false
+          "hideInWeb": false,
+          "skipAsReference": true
         }
       ]
     }

@@ -65,7 +65,7 @@ rule download_clades:
     output:
         clades = "config/clades_consortium_{a_or_b}.tsv"
     params:
-        url = lambda w: f"https://raw.githubusercontent.com/rsv-lineages/lineage-designation-{w.a_or_b.upper()}/main/.auto-generated/lineage.tsv"
+        url = lambda w: f"https://raw.githubusercontent.com/rsv-lineages/lineage-designation-{w.a_or_b.upper()}/main/.auto-generated/lineages.tsv"
     shell:
         """
         curl {params.url} --output {output.clades}

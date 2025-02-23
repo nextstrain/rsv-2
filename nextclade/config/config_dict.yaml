@@ -7,13 +7,13 @@ builds:
   a:
     refs:
       EPI_ISL_412866:
-        filter: "--min-date 1965 --probabilistic-sampling --group-by year --subsample-max-sequences 1500 --query 'genome_coverage>0.95'"
+        filter: "--min-date 1965 --probabilistic-sampling --group-by year --subsample-max-sequences 1500 --query 'genome_coverage>0.95' --exclude-where 'country=Kuwait'"
         exclude_url: https://raw.githubusercontent.com/nextstrain/rsv/master/config/outliers.txt
         reference_strain: hRSV/A/England/397/2017
         reference_accession: EPI_ISL_412866
     clade_systems:
       consortium:
-        url: "https://raw.githubusercontent.com/rsv-lineages/lineage-designation-A/main/.auto-generated/lineage.tsv"
+        url: "https://raw.githubusercontent.com/rsv-lineages/lineage-designation-A/main/.auto-generated/lineages.tsv"
       G:
         url: "https://raw.githubusercontent.com/nextstrain/rsv/master/config/clades_G_a.tsv"
         key: G_clade
@@ -22,13 +22,13 @@ builds:
   b:
     refs:
       EPI_ISL_1653999:
-        filter: "--min-date 1965 --probabilistic-sampling --group-by year --subsample-max-sequences 1500 --query 'genome_coverage>0.95'"
+        filter: "--min-date 1965 --probabilistic-sampling --group-by year --subsample-max-sequences 1500 --query 'genome_coverage>0.95' --exclude-where 'country=Kuwait'"
         exclude_url: https://raw.githubusercontent.com/nextstrain/rsv/master/config/outliers.txt
         reference_strain: hRSV/B/Australia/VIC-RCH056/2019
         reference_accession: EPI_ISL_1653999
     clade_systems:
       consortium:
-        url: https://raw.githubusercontent.com/rsv-lineages/lineage-designation-B/main/.auto-generated/lineage.tsv
+        url: https://raw.githubusercontent.com/rsv-lineages/lineage-designation-B/main/.auto-generated/lineages.tsv
       G:
         key: G_clade
         label_key: G_clade

@@ -60,8 +60,10 @@ rule final_strain_name:
     input:
         auspice_json= rules.export.output.auspice_json,
         metadata = "data/{a_or_b}/metadata.tsv",
+        frequencies = build_dir + "/{a_or_b}/{build_name}/{resolution}/frequencies.json"
     output:
-        auspice_json=build_dir + "/{a_or_b}/{build_name}/{resolution}/tree_renamed.json"
+        auspice_json=build_dir + "/{a_or_b}/{build_name}/{resolution}/tree_renamed.json",
+        freq_json= "auspice/rsv_{a_or_b}_{build_name}_{resolution}_tip-frequencies.json"
     params:
         strain_id=config["strain_id_field"],
         display_strain_field=config.get("display_strain_field", "strain"),
@@ -70,17 +72,19 @@ rule final_strain_name:
         python3 scripts/set_final_strain_name.py --metadata {input.metadata} \
                 --metadata-id-columns {params.strain_id} \
                 --input-auspice-json {input.auspice_json} \
+                --input-frequency-json {input.frequencies} \
                 --display-strain-name {params.display_strain_field} \
-                --output {output.auspice_json}
+                --output-auspice-json {output.auspice_json}\
+                --output-frequencies-json {output.freq_json}
         """
 
 
 rule rename_and_ready_for_nextclade:
     input:
         auspice_json= rules.final_strain_name.output.auspice_json,
-        pathogen_json= "nextclade/config/pathogen.json"
+        pathogen_json= "nextclade/config/pathogen.json",
     output:
-        auspice_json= "auspice/rsv_{a_or_b}_{build_name}_{resolution}.json"
+        auspice_json= "auspice/rsv_{a_or_b}_{build_name}_{resolution}.json",
     params:
         accession= lambda w: config["nextclade_attributes"][w.a_or_b]["accession"],
         name= lambda w: config["nextclade_attributes"][w.a_or_b]["name"],

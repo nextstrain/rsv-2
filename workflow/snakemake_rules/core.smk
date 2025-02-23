@@ -338,3 +338,22 @@ rule traits:
             --columns {params.columns} \
             --confidence
         """
+
+rule frequencies:
+    input:
+        tree = rules.refine.output.tree,
+        metadata = "data/{a_or_b}/metadata.tsv"
+    output:
+        frequencies = build_dir + "/{a_or_b}/{build_name}/{resolution}/frequencies.json"
+    params:
+        min_date_arg = lambda w: f"--min-date {config['filter']['resolutions'][w.resolution]['min_date']}" if w.resolution in config["filter"].get('resolutions', {}) else "",
+    shell:
+        """
+        augur frequencies \
+            --tree {input.tree} \
+            --method kde \
+            --metadata-id-columns accession \
+            {params.min_date_arg} \
+            --metadata {input.metadata} \
+            --output {output.frequencies}
+        """

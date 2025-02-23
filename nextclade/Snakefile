@@ -73,7 +73,7 @@ rule download_changelog:
     output:
         "datasets/{a_or_b}/{reference}/CHANGELOG.md"
     params:
-        url="https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data_output/nextstrain/rsv/{a_or_b}/{reference}/unreleased/CHANGELOG.md"
+        url="https://raw.githubusercontent.com/nextstrain/nextclade_data/master/data/nextstrain/rsv/{a_or_b}/{reference}/CHANGELOG.md"
     shell:
         """
         echo "## Unreleased \n\n <TO BE POPULATED> \n\n" > {output}
@@ -267,7 +267,6 @@ rule clades:
             --membership-name {params.membership_key} \
             --label-name {params.label_key} \
             --output-node-data {output.node_data} \
-            > /dev/null
         """
 
 rule virus_specific_jsons:
@@ -419,6 +418,7 @@ rule clean_all:
         rm -rf build
         rm -rf auspice
         rm -rf datasets
-        rm -rf data/
+        rm -rf data
+        rm -rf .snakemake
         """
 
